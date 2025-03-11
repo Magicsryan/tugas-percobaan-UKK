@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Diskon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+
+    <div class="bg-white p-8 shadow-lg rounded-lg w-[44rem]"> 
+        <h2 class="text-2xl font-bold mb-4 text-center flex items-center justify-center gap-2">
+            <i class="fas fa-dollar-sign text-green-500"></i> 
+            <i class="fab fa-bitcoin text-yellow-500"></i>
+            Hitung Diskon
+        </h2>
+        
+        <form id="discountForm">
+            <label class="block mb-2">Nama Barang:</label>
+            <input type="text" id="barang" class="border p-2 w-full rounded-md" required>
+
+            <label class="block mt-3 mb-2">Harga Barang (Rp):</label>
+            <input type="number" id="harga" class="border p-2 w-full rounded-md" required>
+
+            <label class="block mt-3 mb-2">Diskon (%):</label>
+            <input type="number" id="diskon" class="border p-2 w-full rounded-md" required>
+
+            <button type="submit" class="bg-blue-500 text-white p-2 mt-4 rounded-md w-full">Hitung</button>
+        </form>
+
+        <!-- Tempat menampilkan hasil -->
+        <div id="result" class="mt-4 p-4 bg-gray-200 rounded-md hidden">
+            <h3 class="text-lg font-semibold">Hasil Perhitungan:</h3>
+            <p id="barangName"></p>
+            <p id="hargaAwal"></p>
+            <p id="nilaiDiskon"></p>
+            <p id="totalHarga"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script> <!-- Memanggil script JavaScript -->
+</body>
+</html>
