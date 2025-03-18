@@ -3,41 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Diskon</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Penjualan Barang</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
+<body>
 
-    <div class="bg-white p-8 shadow-lg rounded-lg w-[44rem]"> 
-        <h2 class="text-2xl font-bold mb-4 text-center flex items-center justify-center gap-2">
-            <i class="fas fa-dollar-sign text-green-500"></i> 
-            <i class="fab fa-bitcoin text-yellow-500"></i>
-            Hitung Diskon
-        </h2>
-        
-        <form id="discountForm">
-            <label class="block mb-2">Nama Barang:</label>
-            <input type="text" id="barang" class="border p-2 w-full rounded-md" required>
+    <div class="container">
+        <h2>🛒 Penjualan Barang Elektronik</h2>
 
-            <label class="block mt-3 mb-2">Harga Barang (Rp):</label>
-            <input type="number" id="harga" class="border p-2 w-full rounded-md" required>
+        <form id="productForm">
+            <label>Kode Barang:</label>
+            <select id="kode" required>
+                <option value="">Pilih Produk</option>
+            </select>
 
-            <label class="block mt-3 mb-2">Diskon (%):</label>
-            <input type="number" id="diskon" class="border p-2 w-full rounded-md" required>
+            <label>Nama Barang:</label>
+            <input type="text" id="nama" readonly>
 
-            <button type="submit" class="bg-blue-500 text-white p-2 mt-4 rounded-md w-full">Hitung</button>
+            <label>Harga Satuan (Rp):</label>
+            <input type="text" id="harga" readonly>
+
+            <label>Jumlah Beli:</label>
+            <input type="number" id="jumlah" required min="1">
+
+            <label>Diskon (%):</label>
+            <input type="number" id="diskon" required min="0" max="100">
+
+            <button type="submit">Tambah ke Keranjang</button>
         </form>
 
-        <!-- Tempat menampilkan hasil -->
-        <div id="result" class="mt-4 p-4 bg-gray-200 rounded-md hidden">
-            <h3 class="text-lg font-semibold">Hasil Perhitungan:</h3>
-            <p id="barangName"></p>
-            <p id="hargaAwal"></p>
-            <p id="nilaiDiskon"></p>
-            <p id="totalHarga"></p>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Kode</th>
+                    <th>Nama Barang</th>
+                    <th>Jlh Beli</th>
+                    <th>Harga</th>
+                    <th>Diskon</th>
+                    <th>Sub Total</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="productTable">
+            </tbody>
+        </table>
     </div>
 
-    <script src="script.js"></script> <!-- Memanggil script JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
