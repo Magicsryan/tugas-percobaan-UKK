@@ -1,103 +1,83 @@
-// Array Produk yang Sudah Didefinisikan
-const predefinedProducts = [
-  { kode: "P001", nama: "Laptop", harga: 20000000 },
-  { kode: "P002", nama: "Mouse", harga: 150000 },
-  { kode: "P003", nama: "Keyboard", harga: 350000 },
-  { kode: "P004", nama: "Monitor", harga: 2500000 }
+// Array Produk
+const products = [
+  { kode: "A001", nama: "Laptop", harga: 20000000, image: "asset/laptup.jpeg" },
+  { kode: "A002", nama: "Mouse", harga: 200000, image: "asset/mus.png" },
+  { kode: "A003", nama: "Keyboard", harga: 500000, image: "asset/kibot.jpg" }
 ];
 
-// Daftar produk yang akan dibeli
-let cart = [];
+const cart = [];
 
-// Fungsi untuk mengisi dropdown produk
+// Mengisi dropdown "Pilih Barang"
 function populateProductDropdown() {
-  let productSelect = document.getElementById("kode");
-  predefinedProducts.forEach(product => {
-      let option = document.createElement("option");
-      option.value = product.kode;
-      option.textContent = `${product.kode} - ${product.nama}`;
-      productSelect.appendChild(option);
-  });
+    const barangSelect = document.getElementById("pilihBarang");
+    
+    products.forEach(product => {
+        let option = document.createElement("option");
+        option.value = product.kode;
+        option.textContent = product.nama;
+        barangSelect.appendChild(option);
+    });
 }
 
-// Saat produk dipilih, tampilkan nama dan harga otomatis
-document.getElementById("kode").addEventListener("change", function () {
-  let selectedCode = this.value;
-  let selectedProduct = predefinedProducts.find(p => p.kode === selectedCode);
+// Event listener untuk mengisi data produk berdasarkan pilihan barang
+document.getElementById("pilihBarang").addEventListener("change", function() {
+    const selectedKode = this.value;
+    const product = products.find(p => p.kode === selectedKode);
 
-  if (selectedProduct) {
-      document.getElementById("nama").value = selectedProduct.nama;
-      document.getElementById("harga").value = selectedProduct.harga;
-  }
+    if (product) {
+        document.getElementById("kode").value = product.kode;
+        document.getElementById("nama").value = product.nama;
+        document.getElementById("harga").value = product.harga;
+        document.getElementById("productImage").src = product.image;
+        document.getElementById("productImage").style.display = "block"; // Tampilkan gambar
+    } else {
+        document.getElementById("kode").value = "";
+        document.getElementById("nama").value = "";
+        document.getElementById("harga").value = "";
+        document.getElementById("productImage").style.display = "none"; // Sembunyikan gambar
+    }
 });
 
-// Fungsi saat form disubmit
-document.getElementById("productForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+// Tambahkan produk ke tabel keranjang
+document.getElementById("productForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-  let kode = document.getElementById("kode").value;
-  let nama = document.getElementById("nama").value;
-  let harga = parseFloat(document.getElementById("harga").value);
-  let jumlah = parseInt(document.getElementById("jumlah").value);
-  let diskon = parseFloat(document.getElementById("diskon").value);
+    const kode = document.getElementById("kode").value;
+    const nama = document.getElementById("nama").value;
+    const harga = parseFloat(document.getElementById("harga").value);
+    const jumlah = parseInt(document.getElementById("jumlah").value);
+    const diskon = parseFloat(document.getElementById("diskon").value);
 
-  if (!kode || isNaN(jumlah) || isNaN(diskon)) {
-      alert("Mohon lengkapi data dengan benar!");
-      return;
-  }
+    if (!kode || !jumlah || isNaN(jumlah) || jumlah <= 0 || isNaN(diskon) || diskon < 0 || diskon > 100) {
+        alert("Pastikan data yang dimasukkan benar!");
+        return;
+    }
 
-  let subTotal = (harga * jumlah) - ((harga * jumlah) * (diskon / 100));
+    const subtotal = harga * jumlah - (harga * jumlah * (diskon / 100));
+    cart.push({ kode, nama, jumlah, harga, diskon, subtotal });
 
-  let product = { kode, nama, harga, jumlah, diskon, subTotal };
-  cart.push(product);
-
-  updateTable();
-  this.reset();
+    updateTable();
+    this.reset();
+    document.getElementById("productImage").style.display = "none";
 });
 
-// Update tampilan tabel
+// Update tabel keranjang
 function updateTable() {
-  let tableBody = document.getElementById("productTable");
-  tableBody.innerHTML = "";
+    const tableBody = document.getElementById("productTable");
+    tableBody.innerHTML = "";
 
-  cart.forEach((product, index) => {
-      let row = `<tr>
-          <td>${product.kode}</td>
-          <td>${product.nama}</td>
-          <td>${product.jumlah}</td>
-          <td>Rp${product.harga.toLocaleString()}</td>
-          <td>${product.diskon}%</td>
-          <td>Rp${product.subTotal.toLocaleString()}</td>
-          <td>
-              <button class="edit" onclick="editProduct(${index})">Edit</button>
-              <button class="delete" onclick="deleteProduct(${index})">Hapus</button>
-          </td>
-      </tr>`;
+    cart.forEach((item, index) => {
+        let row = `<tr>
+            <td>${item.kode}</td>
+            <td>${item.nama}</td>
+            <td>${item.jumlah}</td>
+            <td>Rp${item.harga.toLocaleString()}</td>
+            <td>${item.diskon}%</td>
+            <td>Rp${item.subtotal.toLocaleString()}</td>
 
-      tableBody.innerHTML += row;
-  });
-}
-
-// Fungsi Edit Produk
-function editProduct(index) {
-  let product = cart[index];
-
-  document.getElementById("kode").value = product
-  document.getElementById("kode").value = product.kode;
-  document.getElementById("nama").value = product.nama;
-  document.getElementById("harga").value = product.harga;
-  document.getElementById("jumlah").value = product.jumlah;
-  document.getElementById("diskon").value = product.diskon;
-
-  // Hapus produk dari keranjang sementara agar bisa diperbarui
-  cart.splice(index, 1);
-  updateTable();
-}
-
-// Fungsi Hapus Produk
-function deleteProduct(index) {
-  cart.splice(index, 1);
-  updateTable();
+        </tr>`;
+        tableBody.innerHTML += row;
+    });
 }
 
 // Jalankan fungsi untuk mengisi dropdown saat halaman dimuat

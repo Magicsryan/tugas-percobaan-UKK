@@ -23,6 +23,15 @@ form {
     flex-direction: column;
 }
 
+#productImage {
+    display: block;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
 label {
     font-weight: bold;
     margin-top: 10px;
